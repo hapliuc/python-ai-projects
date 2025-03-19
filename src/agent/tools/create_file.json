@@ -1,0 +1,21 @@
+{
+    "type": "function",
+    "function": {
+        "name": "create_file",
+        "description": "Create a file with a given name",
+        "parameters": {
+            "type": "object",
+            "properties": {
+                "name": {
+                    "type": "string",
+                    "description": "Name of the file or directory"
+                }
+            },
+            "required": [
+                "name"
+            ],
+            "additionalProperties": false
+        },
+        "strict": true
+    }
+}

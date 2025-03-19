@@ -1,0 +1,21 @@
+{
+    "type": "function",
+    "function": {
+        "name": "create_folder",
+        "description": "Create a folder",
+        "parameters": {
+            "type": "object",
+            "properties": {
+                "path": {
+                    "type": "string",
+                    "description": "Path in which to create the folder"
+                }
+            },
+            "required": [
+                "path"
+            ],
+            "additionalProperties": false
+        },
+        "strict": true
+    }
+}
