@@ -9,49 +9,51 @@ from openai.types.chat import ChatCompletion
 logger = logging.getLogger(__name__)
 
 
-def llm_completion(client: OpenAI, model: str, messages: list, tools: list) -> ChatCompletion: 
+def llm_completion(
+    client: OpenAI, model: str, messages: list, tools: list
+) -> ChatCompletion:
     try:
         return client.chat.completions.create(
-            model=model,
-            messages=messages,
-            tools=tools
+            model=model, messages=messages, tools=tools
         )
     except APIConnectionError as e:
-        logger.critical(f'Exception: {e.__class__.__name__} - {e}', exc_info=True)
+        logger.critical(f"Exception: {e.__class__.__name__} - {e}", exc_info=True)
         exit(1)
 
 
-def llm_completion_structured(client: OpenAI, model: str, messages: list, tools: list, response_format):
+def llm_completion_structured(
+    client: OpenAI, model: str, messages: list, tools: list, response_format
+):
     try:
         return client.beta.chat.completions.parse(
-            model=model,
-            messages=messages,
-            tools=tools,
-            response_format=response_format
+            model=model, messages=messages, tools=tools, response_format=response_format
         )
     except APIConnectionError as e:
-        logger.critical(f'Exception: {e.__class__.__name__} - {e}', exc_info=True)
+        logger.critical(f"Exception: {e.__class__.__name__} - {e}", exc_info=True)
         exit(1)
     except TypeError as e:
-        logger.critical(f'Exception: {e.__class__.__name__} - {e}', exc_info=True)
+        logger.critical(f"Exception: {e.__class__.__name__} - {e}", exc_info=True)
         exit(1)
 
 
 def llm_load_tools(path: str, tools: list) -> None:
     try:
-         for file in os.listdir(path):
-             if file.endswith('.json'):
-                 with open(f'{path}/{file}', 'r') as f:
-                     tools.append(json.loads(f.read()))
+        for file in os.listdir(path):
+            if file.endswith(".json"):
+                with open(f"{path}/{file}", "r") as f:
+                    tools.append(json.loads(f.read()))
 
     except JSONDecodeError as e:
-        logger.critical(f'Exception: {e.__class__.__name__} - {e}', exc_info=True)
+        logger.critical(f"Exception: {e.__class__.__name__} - {e}", exc_info=True)
         exit(1)
 
 
-def llm_function_call(completion: ChatCompletion, messages: list, function_list: list) -> None:
+def llm_function_call(
+    completion: ChatCompletion, messages: list, function_list: list
+) -> None:
     try:
         if completion.choices[0].message.tool_calls:
+
             def call_function(name, args):
                 nonlocal function_list
                 for function in function_list:
@@ -63,19 +65,17 @@ def llm_function_call(completion: ChatCompletion, messages: list, function_list:
                 args = json.loads(tool_call.function.arguments)
                 result = call_function(name, args)
                 messages.append(completion.choices[0].message)
-                messages.append({
-                    'role': 'tool',
-                    'tool_call_id': tool_call.id,
-                    'content': result
-                })
+                messages.append(
+                    {"role": "tool", "tool_call_id": tool_call.id, "content": result}
+                )
     except AttributeError as e:
-        logger.critical(f'Exception: {e.__class__.__name__} - {e}', exc_info=True)
+        logger.critical(f"Exception: {e.__class__.__name__} - {e}", exc_info=True)
         exit(1)
-    
+
 
 def main() -> None:
     logging.basicConfig(level=logging.DEBUG)
 
-if __name__ == '__main__':
-    main()
 
+if __name__ == "__main__":
+    main()
