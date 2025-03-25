@@ -1,17 +1,8 @@
 import os
 from dotenv import load_dotenv
 from openai import OpenAI
-from llm_functions import llm_completion, llm_function_call, llm_load_tools
-
-
-def create_folder(path: str) -> str:
-    os.popen(f"mkdir {path}")
-    return f"Created directory {path}"
-
-
-def create_file(name: str) -> str:
-    os.popen(f"touch {name}")
-    return f"Created file {name}"
+from agent_pkg.llm import completion, function_call, load_tools
+from agent_pkg.tools import create_file, create_folder
 
 
 def main() -> None:
@@ -23,7 +14,7 @@ def main() -> None:
 
     client = OpenAI(base_url="http://localhost:11434/v1", api_key="ollama")
 
-    llm_load_tools(tool_path, tools)
+    load_tools(tool_path, tools)
     system_prompt: dict = {
         "role": "system",
         "content": "You are a helpful AI chatbot with agentic capabilities. Use the tools you have acces to, to fulfill user requests",
@@ -34,9 +25,9 @@ def main() -> None:
     user_prompt: dict = {"role": "user", "content": user_input}
     messages.append(user_prompt)
 
-    completion_1 = llm_completion(client, "llama3.2", messages, tools)
-    llm_function_call(completion_1, messages, function_list)
-    completion_2 = llm_completion(client, "llama3.2", messages, tools)
+    completion_1 = completion(client, "llama3.2", messages, tools)
+    function_call(completion_1, messages, function_list)
+    completion_2 = completion(client, "llama3.2", messages, tools)
     print(f"> LLM Response:", completion_2.choices[0].message.content)
 
 

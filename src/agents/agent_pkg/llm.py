@@ -9,7 +9,7 @@ from openai.types.chat import ChatCompletion
 logger = logging.getLogger(__name__)
 
 
-def llm_completion(
+def completion(
     client: OpenAI, model: str, messages: list, tools: list
 ) -> ChatCompletion:
     try:
@@ -21,7 +21,7 @@ def llm_completion(
         exit(1)
 
 
-def llm_completion_structured(
+def completion_structured(
     client: OpenAI, model: str, messages: list, tools: list, response_format
 ):
     try:
@@ -36,7 +36,7 @@ def llm_completion_structured(
         exit(1)
 
 
-def llm_load_tools(path: str, tools: list) -> None:
+def load_tools(path: str, tools: list) -> None:
     try:
         for file in os.listdir(path):
             if file.endswith(".json"):
@@ -48,7 +48,7 @@ def llm_load_tools(path: str, tools: list) -> None:
         exit(1)
 
 
-def llm_function_call(
+def function_call(
     completion: ChatCompletion, messages: list, function_list: list
 ) -> None:
     try:
