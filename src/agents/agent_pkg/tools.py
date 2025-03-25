@@ -6,6 +6,6 @@ def create_folder(path: str) -> str:
     return f"Created directory {path}"
 
 
-def create_file(name: str) -> str:
-    os.popen(f"touch {name}")
-    return f"Created file {name}"
+def create_file(path: str) -> str:
+    os.popen(f"touch {path}")
+    return f"Created file {path}"

@@ -36,12 +36,12 @@ def completion_structured(
         exit(1)
 
 
-def load_tools(path: str, tools: list) -> None:
+def load_json(json_path: str, json_iterable: list) -> None:
     try:
-        for file in os.listdir(path):
+        for file in os.listdir(json_path):
             if file.endswith(".json"):
-                with open(f"{path}/{file}", "r") as f:
-                    tools.append(json.loads(f.read()))
+                with open(f"{json_path}/{file}", "r") as f:
+                    json_iterable.append(json.loads(f.read()))
 
     except JSONDecodeError as e:
         logger.critical(f"Exception: {e.__class__.__name__} - {e}", exc_info=True)

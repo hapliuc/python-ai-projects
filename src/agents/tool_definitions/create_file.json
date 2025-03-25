@@ -2,17 +2,17 @@
     "type": "function",
     "function": {
         "name": "create_file",
-        "description": "Create a file with a given name",
+        "description": "Create a file in a given path",
         "parameters": {
             "type": "object",
             "properties": {
-                "name": {
+                "path": {
                     "type": "string",
-                    "description": "Name of the file or directory"
+                    "description": "Path of the file or directory"
                 }
             },
             "required": [
-                "name"
+                "path"
             ],
             "additionalProperties": false
         },

@@ -1,0 +1,4 @@
+{
+  "role": "system",
+  "content": "Your role is to fulfill user requests and to engage with them in a conversation. DO NOT CALL TOOLS IF THE USER DID NOT REQUEST THEM"
+}
